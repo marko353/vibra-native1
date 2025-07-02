@@ -35,7 +35,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "splash": {
-      "image": "./assets/images/react-logo@3x.png",
+      "image": "./assets/images/Page0.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
