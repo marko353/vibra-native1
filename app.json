@@ -4,7 +4,9 @@
     "slug": "vibra-nativ",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/react-logo@3x.png",
+
+    "icon": "./assets/images/icon.png",
+
     "scheme": "vibranativ",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +16,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/react-logo@3x.png",
+
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -34,6 +38,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
+
     "splash": {
       "image": "./assets/images/Page0.png",
       "resizeMode": "contain",
@@ -41,6 +46,7 @@
     },
     "plugins": [
       "expo-router",
+
       "expo-web-browser"
     ],
     "experiments": {
