@@ -215,11 +215,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 39,
     gap: 16,
+    marginTop: 30,
   },
   title: {
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#4c8bf5',
+  
   },
   formWrapper: {
     marginTop: 12,
