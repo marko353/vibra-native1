@@ -103,7 +103,7 @@ export default function LoginScreen() {
     <View style={styles.container} accessible accessibilityLabel="Login screen">
       <View style={styles.topRight}>
       <TouchableOpacity 
-  onPress={() => router.push('/signup/birthday')} 
+  onPress={() => router.push('./signup')} 
   accessible 
   accessibilityRole="button" 
   accessibilityLabel="Go to Sign Up"
