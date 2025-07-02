@@ -102,7 +102,7 @@ export default function BirthdayScreen() {
         {/* Strelica za povratak */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.push('/login')}>
-            <AntDesign name="arrowleft" size={24} color="#4c8bf5" />
+            <AntDesign name="arrowleft" size={23} color="#4c8bf5" />
           </TouchableOpacity>
         </View>
 
