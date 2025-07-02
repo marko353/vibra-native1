@@ -7,16 +7,27 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
-  
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Constants from 'expo-constants';
 
+const monthNames = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
+
 export default function CreateAccountScreen() {
   const router = useRouter();
-  const { day, month, year } = useLocalSearchParams();
+  const params = useLocalSearchParams();
+
+  const safeParam = (param: string | string[] | undefined) =>
+    Array.isArray(param) ? param[0] : param || '';
+
+  const day = safeParam(params.day);
+  const month = safeParam(params.month);
+  const year = safeParam(params.year);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -51,9 +62,9 @@ export default function CreateAccountScreen() {
 
     try {
       const username = email.split('@')[0];
-      const birthDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      const birthDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, {
+      await axios.post(`${API_BASE_URL}/api/auth/register`, {
         name,
         username,
         email,
@@ -70,125 +81,148 @@ export default function CreateAccountScreen() {
     }
   };
 
+  const isFormValid = name && email && pass && confPass && agree;
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => router.back()}>
-          <AntDesign name="arrowleft" size={24} color="#4c8bf5" />
+          <AntDesign name="arrowleft" size={23} color="#4c8bf5" />
         </TouchableOpacity>
         <Text style={styles.title}>Create Account</Text>
       </View>
 
-      {/* Name */}
-      <TextInput
-        style={[styles.input, errors.name && styles.inputError]}
-        placeholder="Name"
-        placeholderTextColor="#999"
-        value={name}
-        onChangeText={(text) => setName(text)}
-        returnKeyType="next"
-        onSubmitEditing={() => emailRef.current?.focus()}
-      />
-      {errors.name && <Text style={styles.error}>{errors.name}</Text>}
-
-      {/* Email */}
-      <TextInput
-        ref={emailRef}
-        style={[styles.input, errors.email && styles.inputError]}
-        placeholder="Email"
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        returnKeyType="next"
-        onSubmitEditing={() => passRef.current?.focus()}
-      />
-      {errors.email && <Text style={styles.error}>{errors.email}</Text>}
-
-      {/* Password */}
-      <View style={styles.inputPasswordWrapper}>
+      <View style={styles.formWrapper}>
+        {/* Name */}
         <TextInput
-          ref={passRef}
-          style={[styles.input, styles.flex, errors.pass && styles.inputError]}
-          placeholder="Password"
+          style={[styles.input, errors.name && styles.inputError]}
+          placeholder="Name"
           placeholderTextColor="#999"
-          secureTextEntry={!showPass}
-          value={pass}
-          onChangeText={(text) => setPass(text)}
+          value={name}
+          onChangeText={(text) => setName(text)}
           returnKeyType="next"
-          onSubmitEditing={() => confRef.current?.focus()}
+          onSubmitEditing={() => emailRef.current?.focus()}
         />
-        <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-          <AntDesign
-            name={showPass ? 'eye' : 'eyeo'}
-            size={20}
-            color="#666"
-            style={{ paddingRight: 10 }}
-          />
-        </TouchableOpacity>
-      </View>
-      {errors.pass && <Text style={styles.error}>{errors.pass}</Text>}
+        {errors.name && <Text style={styles.error}>{errors.name}</Text>}
 
-      {/* Confirm Password */}
-      <View style={styles.inputPasswordWrapper}>
+        {/* Email */}
         <TextInput
-          ref={confRef}
-          style={[styles.input, styles.flex, errors.conf && styles.inputError]}
-          placeholder="Confirm Password"
+          ref={emailRef}
+          style={[styles.input, errors.email && styles.inputError]}
+          placeholder="Email"
           placeholderTextColor="#999"
-          secureTextEntry={!showConf}
-          value={confPass}
-          onChangeText={(text) => setConfPass(text)}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => passRef.current?.focus()}
         />
-        <TouchableOpacity onPress={() => setShowConf(!showConf)}>
-          <AntDesign
-            name={showConf ? 'eye' : 'eyeo'}
-            size={20}
-            color="#666"
-            style={{ paddingRight: 10 }}
+        {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+
+        {/* Password */}
+        <View style={styles.inputPasswordWrapper}>
+          <TextInput
+            ref={passRef}
+            style={[styles.input, styles.flex, errors.pass && styles.inputError]}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showPass}
+            value={pass}
+            onChangeText={(text) => setPass(text)}
+            returnKeyType="next"
+            onSubmitEditing={() => confRef.current?.focus()}
           />
+          <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+            <AntDesign
+              name={showPass ? 'eye' : 'eyeo'}
+              size={20}
+              color="#666"
+              style={{ paddingRight: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
+        {errors.pass && <Text style={styles.error}>{errors.pass}</Text>}
+
+        {/* Confirm Password */}
+        <View style={styles.inputPasswordWrapper}>
+          <TextInput
+            ref={confRef}
+            style={[styles.input, styles.flex, errors.conf && styles.inputError]}
+            placeholder="Confirm Password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showConf}
+            value={confPass}
+            onChangeText={(text) => setConfPass(text)}
+          />
+          <TouchableOpacity onPress={() => setShowConf(!showConf)}>
+            <AntDesign
+              name={showConf ? 'eye' : 'eyeo'}
+              size={20}
+              color="#666"
+              style={{ paddingRight: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
+        {errors.conf && <Text style={styles.error}>{errors.conf}</Text>}
+
+        {/* Date of Birth */}
+        <Text style={styles.dobLabel}>Date of Birth:</Text>
+        <Text style={styles.dobText}>{`${parseInt(day)}.${monthNames[parseInt(month) - 1]}.${year}`}</Text>
+
+        {/* Checkbox */}
+        <View style={styles.checkRow}>
+          <TouchableOpacity
+            style={[styles.checkbox, agree && styles.checkboxChecked]}
+            onPress={() => setAgree(!agree)}
+          >
+            {agree && <AntDesign name="check" size={14} color="#fff" />}
+          </TouchableOpacity>
+          <Text style={styles.checkLabel}>
+            I agree to the Terms and Privacy Policy
+          </Text>
+        </View>
+        {errors.agree && <Text style={styles.error}>{errors.agree}</Text>}
+
+        {/* Create Account Button */}
+        <TouchableOpacity
+          style={[styles.createButton, !isFormValid && styles.disabledButton]}
+          onPress={handleCreate}
+          disabled={!isFormValid}
+        >
+          <Text style={styles.createButtonText}>Create Account</Text>
+        </TouchableOpacity>
+
+        {/* Google Button */}
+        <TouchableOpacity style={styles.createButton}>
+          <FontAwesome name="google" size={20} color="#fff" />
+          <Text style={styles.createButtonText}>  Continue with Google</Text>
         </TouchableOpacity>
       </View>
-      {errors.conf && <Text style={styles.error}>{errors.conf}</Text>}
-
-      {/* Agree checkbox */}
-      <View style={styles.checkRow}>
-        <TouchableOpacity
-          style={[styles.checkbox, agree && styles.checkboxChecked]}
-          onPress={() => setAgree(!agree)}
-        />
-        <Text style={styles.checkLabel}>
-          I agree to the Terms and Privacy Policy
-        </Text>
-      </View>
-      {errors.agree && <Text style={styles.error}>{errors.agree}</Text>}
-
-      {/* Create Button */}
-      <TouchableOpacity style={styles.createButton} onPress={handleCreate}>
-        <Text style={styles.createButtonText}>Create Account</Text>
-      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: 28,
     backgroundColor: '#fff',
     flex: 1,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    gap: 8,
+    marginBottom: 39,
+    gap: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#4c8bf5',
+  },
+  formWrapper: {
+    marginTop: 12,
   },
   input: {
     backgroundColor: '#f5f5f5',
@@ -224,6 +258,17 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
+  dobLabel: {
+    marginTop: 8,
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#444',
+  },
+  dobText: {
+    fontSize: 16,
+    marginBottom: 14,
+    color: '#333',
+  },
   checkRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -236,6 +281,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#4c8bf5',
     marginRight: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   checkboxChecked: {
     backgroundColor: '#4c8bf5',
@@ -251,10 +298,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  disabledButton: {
+    backgroundColor: '#a3c1fa',
   },
   createButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
   },
 });
