@@ -113,11 +113,9 @@ export default function LoginScreen() {
 </TouchableOpacity>
       </View>
 
-      <Image source={require('@/assets/images/Page0.png')} style={styles.logo} accessibilityLabel="Vibra logo" />
+      <Image source={require('@/assets/images/1000006380.png')} style={styles.logo} accessibilityLabel="Vibra logo" />
 
-      <Text style={styles.title}>Glad to see you back!</Text>
-      <Text style={styles.subtitle}>Log in to your account and start vibing</Text>
-
+    
       <Controller
         control={control}
         name="email"
@@ -226,27 +224,16 @@ const styles = StyleSheet.create({
     right: 20,
   },
   signUpText: {
-    color: '#4c8bf5',
+    color: '#ff7f00',  // narandžasta
     fontSize: 16,
     fontWeight: 'bold',
   },
   logo: {
-    width: 140,
-    height: 140,
+    width: 200,
+    height: 200,
     marginBottom: 30,
     marginTop: 20,
     resizeMode: 'contain',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: '700',
-    marginBottom: 6,
-    color: '#222',
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#666',
-    marginBottom: 28,
   },
   input: {
     width: '100%',
@@ -261,10 +248,10 @@ const styles = StyleSheet.create({
     color: '#222',
   },
   inputError: {
-    borderColor: '#d00',
+    borderColor: '#d00', // crvena
   },
   button: {
-    backgroundColor: '#4c8bf5',
+    backgroundColor: '#ff7f00', 
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -284,7 +271,7 @@ const styles = StyleSheet.create({
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#4285F4',
+    backgroundColor: '#d00', // crvena
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -298,14 +285,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   error: {
-    color: '#d00',
+    color: '#d00', // crvena
     marginBottom: 8,
     alignSelf: 'flex-start',
     fontWeight: '600',
   },
   forgotPassword: {
     marginTop: 22,
-    color: '#2a6bdb',
+    color: '#ffcc00', // žuta
     fontWeight: '700',
     fontSize: 15,
     textDecorationLine: 'underline',

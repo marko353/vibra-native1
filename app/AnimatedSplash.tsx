@@ -25,7 +25,7 @@ export default function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('@/assets/images/Page0.png')}
+        source={require('@/assets/images/1000006381.png')}
         style={[styles.image, { opacity }]}
         resizeMode="contain"
       />

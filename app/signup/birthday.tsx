@@ -51,11 +51,7 @@ export default function BirthdayScreen() {
       return '• Invalid year';
     }
 
-    if (
-      day.length === 2 &&
-      month.length === 2 &&
-      year.length === 4
-    ) {
+    if (day.length === 2 && month.length === 2 && year.length === 4) {
       const date = new Date(yearNum, monthNum - 1, dayNum);
       if (
         date.getFullYear() !== yearNum ||
@@ -99,10 +95,9 @@ export default function BirthdayScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
     >
       <View style={styles.container}>
-        {/* Strelica za povratak */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.push('/login')}>
-            <AntDesign name="arrowleft" size={23} color="#4c8bf5" />
+            <AntDesign name="arrowleft" size={28} color="#ff7f00" />
           </TouchableOpacity>
         </View>
 
@@ -127,6 +122,8 @@ export default function BirthdayScreen() {
             }}
             returnKeyType="next"
             onSubmitEditing={() => monthRef.current?.focus()}
+            selectionColor="#ff7f00"
+            cursorColor="#ff7f00"
           />
           <TextInput
             ref={monthRef}
@@ -145,6 +142,8 @@ export default function BirthdayScreen() {
             }}
             returnKeyType="next"
             onSubmitEditing={() => yearRef.current?.focus()}
+            selectionColor="#ff7f00"
+            cursorColor="#ff7f00"
           />
           <TextInput
             ref={yearRef}
@@ -158,6 +157,8 @@ export default function BirthdayScreen() {
             }}
             returnKeyType="done"
             onSubmitEditing={handleNext}
+            selectionColor="#ff7f00"
+            cursorColor="#ff7f00"
           />
         </View>
 
@@ -189,17 +190,18 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   header: {
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
     marginBottom: 20,
   },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#ff7f00',
+  },
   subtitle: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 30,
+    fontSize: 16,
+    color: '#ffcc00',
+    marginBottom: 40,
   },
   inputRow: {
     flexDirection: 'row',
@@ -208,36 +210,49 @@ const styles = StyleSheet.create({
   input: {
     width: '30%',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 14,
-    fontSize: 16,
+    borderColor: '#ff7f00',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    fontSize: 18,
     textAlign: 'center',
+    backgroundColor: '#fff7e6',
+    shadowColor: '#ff7f00',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
   },
   error: {
     color: '#d00',
-    marginTop: 6,
-    fontSize: 13,
+    marginTop: 8,
+    fontSize: 14,
     textAlign: 'left',
+    fontWeight: '600',
   },
   buttonWrapper: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 40,
   },
   button: {
-    backgroundColor: '#4c8bf5',
-    paddingVertical: 16,
+    backgroundColor: '#ff7f00', 
+    paddingVertical: 14,
+    paddingHorizontal: 30,
     borderRadius: 10,
-    alignItems: 'center',
+    marginTop: 10,
+    width: '100%',
+    justifyContent: 'center',
   },
   disabledButton: {
-    backgroundColor: '#a0c0f5',
+    backgroundColor: '#ffb766',
   },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 20,
+    textAlign: 'center',
+
   },
 });

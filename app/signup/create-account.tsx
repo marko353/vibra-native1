@@ -88,7 +88,7 @@ export default function CreateAccountScreen() {
       {/* Header */}
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => router.back()}>
-          <AntDesign name="arrowleft" size={23} color="#4c8bf5" />
+         <AntDesign name="arrowleft" size={23} color="#ff7f00" />
         </TouchableOpacity>
         <Text style={styles.title}>Create Account</Text>
       </View>
@@ -207,7 +207,7 @@ export default function CreateAccountScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 28,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffff', 
     flex: 1,
   },
   headerRow: {
@@ -220,29 +220,28 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#4c8bf5',
-  
+    color: '#ff7f00',
   },
   formWrapper: {
     marginTop: 12,
   },
   input: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 14,
     marginBottom: 10,
     fontSize: 16,
     color: '#222',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#ff7f00',
   },
   inputPasswordWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fff',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#ff7f00',
     marginBottom: 10,
   },
   flex: {
@@ -264,7 +263,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#444',
+    color: '#ff7f00',
   },
   dobText: {
     fontSize: 16,
@@ -281,13 +280,13 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: '#4c8bf5',
+    borderColor: '#ff7f00',
     marginRight: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#4c8bf5',
+    backgroundColor: '#ff7f00',
   },
   checkLabel: {
     fontSize: 15,
@@ -295,7 +294,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   createButton: {
-    backgroundColor: '#4c8bf5',
+    backgroundColor: '#ff7f00',
     padding: 16,
     borderRadius: 10,
     alignItems: 'center',
@@ -304,7 +303,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   disabledButton: {
-    backgroundColor: '#a3c1fa',
+    backgroundColor: '#ffc180',
   },
   createButtonText: {
     color: '#fff',
