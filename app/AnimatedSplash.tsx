@@ -25,7 +25,7 @@ export default function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('@/assets/images/1000006381.png')}
+        source={require('@/assets/images/1000006401.png')}
         style={[styles.image, { opacity }]}
         resizeMode="contain"
       />
@@ -36,7 +36,7 @@ export default function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'ffff',
     justifyContent: 'center',
     alignItems: 'center',
   },

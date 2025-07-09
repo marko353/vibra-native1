@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#d00', // crvena
+    backgroundColor: '#d00', 
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 10,

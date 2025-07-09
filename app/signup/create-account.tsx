@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import Constants from 'expo-constants';
 
@@ -57,7 +57,6 @@ export default function CreateAccountScreen() {
 
   const handleCreate = async () => {
     Keyboard.dismiss();
-
     if (!validate()) return;
 
     try {
@@ -85,10 +84,9 @@ export default function CreateAccountScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => router.back()}>
-         <AntDesign name="arrowleft" size={23} color="#ff7f00" />
+          <AntDesign name="arrowleft" size={23} color="#ff7f00" />
         </TouchableOpacity>
         <Text style={styles.title}>Create Account</Text>
       </View>
@@ -98,11 +96,13 @@ export default function CreateAccountScreen() {
         <TextInput
           style={[styles.input, errors.name && styles.inputError]}
           placeholder="Name"
-          placeholderTextColor="#999"
+          placeholderTextColor="#cc9966"
           value={name}
-          onChangeText={(text) => setName(text)}
+          onChangeText={setName}
           returnKeyType="next"
           onSubmitEditing={() => emailRef.current?.focus()}
+          selectionColor="#ff7f00"
+          cursorColor="#ff7f00"
         />
         {errors.name && <Text style={styles.error}>{errors.name}</Text>}
 
@@ -111,58 +111,60 @@ export default function CreateAccountScreen() {
           ref={emailRef}
           style={[styles.input, errors.email && styles.inputError]}
           placeholder="Email"
-          placeholderTextColor="#999"
+          placeholderTextColor="#cc9966"
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={setEmail}
           returnKeyType="next"
           onSubmitEditing={() => passRef.current?.focus()}
+          selectionColor="#ff7f00"
+          cursorColor="#ff7f00"
         />
         {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
         {/* Password */}
-        <View style={styles.inputPasswordWrapper}>
+        <View style={[styles.inputWrapper, errors.pass && styles.inputError]}>
           <TextInput
             ref={passRef}
-            style={[styles.input, styles.flex, errors.pass && styles.inputError]}
+            style={styles.input}
             placeholder="Password"
-            placeholderTextColor="#999"
+            placeholderTextColor="#cc9966"
             secureTextEntry={!showPass}
             value={pass}
-            onChangeText={(text) => setPass(text)}
+            onChangeText={setPass}
             returnKeyType="next"
             onSubmitEditing={() => confRef.current?.focus()}
+            selectionColor="#ff7f00"
+            cursorColor="#ff7f00"
           />
-          <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-            <AntDesign
-              name={showPass ? 'eye' : 'eyeo'}
-              size={20}
-              color="#666"
-              style={{ paddingRight: 10 }}
-            />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowPass(!showPass)}
+          >
+            <AntDesign name={showPass ? 'eye' : 'eyeo'} size={20} color="#666" />
           </TouchableOpacity>
         </View>
         {errors.pass && <Text style={styles.error}>{errors.pass}</Text>}
 
         {/* Confirm Password */}
-        <View style={styles.inputPasswordWrapper}>
+        <View style={[styles.inputWrapper, errors.conf && styles.inputError]}>
           <TextInput
             ref={confRef}
-            style={[styles.input, styles.flex, errors.conf && styles.inputError]}
+            style={styles.input}
             placeholder="Confirm Password"
-            placeholderTextColor="#999"
+            placeholderTextColor="#cc9966"
             secureTextEntry={!showConf}
             value={confPass}
-            onChangeText={(text) => setConfPass(text)}
+            onChangeText={setConfPass}
+            selectionColor="#ff7f00"
+            cursorColor="#ff7f00"
           />
-          <TouchableOpacity onPress={() => setShowConf(!showConf)}>
-            <AntDesign
-              name={showConf ? 'eye' : 'eyeo'}
-              size={20}
-              color="#666"
-              style={{ paddingRight: 10 }}
-            />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowConf(!showConf)}
+          >
+            <AntDesign name={showConf ? 'eye' : 'eyeo'} size={20} color="#666" />
           </TouchableOpacity>
         </View>
         {errors.conf && <Text style={styles.error}>{errors.conf}</Text>}
@@ -179,13 +181,11 @@ export default function CreateAccountScreen() {
           >
             {agree && <AntDesign name="check" size={14} color="#fff" />}
           </TouchableOpacity>
-          <Text style={styles.checkLabel}>
-            I agree to the Terms and Privacy Policy
-          </Text>
+          <Text style={styles.checkLabel}>I agree to the Terms and Privacy Policy</Text>
         </View>
         {errors.agree && <Text style={styles.error}>{errors.agree}</Text>}
 
-        {/* Create Account Button */}
+        {/* Create Account */}
         <TouchableOpacity
           style={[styles.createButton, !isFormValid && styles.disabledButton]}
           onPress={handleCreate}
@@ -194,10 +194,10 @@ export default function CreateAccountScreen() {
           <Text style={styles.createButtonText}>Create Account</Text>
         </TouchableOpacity>
 
-        {/* Google Button */}
+        {/* Google Auth */}
         <TouchableOpacity style={styles.createButton}>
-          <FontAwesome name="google" size={20} color="#fff" />
-          <Text style={styles.createButtonText}>  Continue with Google</Text>
+          <AntDesign name="google" size={20} color="#fff" style={{ marginRight: 12 }} />
+          <Text style={styles.createButtonText}>Continue with Google</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -207,7 +207,7 @@ export default function CreateAccountScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 28,
-    backgroundColor: '#ffff', 
+    backgroundColor: '#fff',
     flex: 1,
   },
   headerRow: {
@@ -226,35 +226,31 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fff7e6',
     borderRadius: 10,
     padding: 14,
-    marginBottom: 10,
     fontSize: 16,
-    color: '#222',
+    color: '#663300',
     borderWidth: 1,
     borderColor: '#ff7f00',
+    marginBottom: 15,
   },
-  inputPasswordWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ff7f00',
-    marginBottom: 10,
+  inputWrapper: {
+    position: 'relative',
+   
   },
-  flex: {
-    flex: 1,
-    padding: 14,
-    fontSize: 16,
-    color: '#222',
+  eyeIcon: {
+    position: 'absolute',
+    right: 14,
+    top: '50%',
+    transform: [{ translateY: -16 }],
+    zIndex: 10,
   },
   inputError: {
-    borderColor: '#d00',
+    borderColor: '#d00000',
   },
   error: {
-    color: '#d00',
+    color: '#d00000',
     marginBottom: 10,
     fontSize: 13,
     fontWeight: '600',
