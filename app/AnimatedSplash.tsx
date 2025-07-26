@@ -11,7 +11,7 @@ export default function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
         duration: 1000,
         useNativeDriver: true,
       }),
-      Animated.delay(1000),
+      Animated.delay(2000), // drži splash vidljivim 2 sekunde
       Animated.timing(opacity, {
         toValue: 0,
         duration: 1000,
@@ -36,7 +36,7 @@ export default function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'ffff',
+    backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
   },

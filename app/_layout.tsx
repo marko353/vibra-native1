@@ -1,18 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Slot } from 'expo-router';
-import { AuthProvider } from '../context/AuthContext';
+import { AuthProvider, useAuthContext } from '../context/AuthContext';
 import AnimatedSplash from './AnimatedSplash';
+import { View, ActivityIndicator } from 'react-native';
+import { useRouter } from 'expo-router';
+
+// React Query
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Gesture Handler
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+// Kreiraj QueryClient
+const queryClient = new QueryClient();
+
+function AppContent() {
+  const { user, loading } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        router.replace('/home'); // ili '/profile'
+      } else {
+        router.replace('/login');
+      }
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#ff7f00" />
+      </View>
+    );
+  }
+
+  return <Slot />;
+}
 
 export default function Layout() {
-  const [isSplashVisible, setSplashVisible] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
 
-  if (isSplashVisible) {
-    return <AnimatedSplash onFinish={() => setSplashVisible(false)} />;
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return <AnimatedSplash onFinish={() => setShowSplash(false)} />;
   }
 
   return (
-    <AuthProvider>
-      <Slot />
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -11,7 +11,8 @@ import * as WebBrowser from 'expo-web-browser';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AntDesign } from '@expo/vector-icons';
-import { useAuthContext } from '../context/AuthContext';import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuthContext } from '../context/AuthContext';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -57,13 +58,17 @@ export default function LoginScreen() {
       }
       setLoading(true);
       axios.post(`${API_BASE_URL}/api/auth/google`, { token: idToken })
-        .then((res) => {
-          setUser({
+        .then(async (res) => {
+          const userData = {
             id: res.data.id,
             fullName: res.data.fullName,
             email: res.data.email,
             token: res.data.token,
-          });
+          };
+          setUser(userData);
+          // Čuvaj user i token u AsyncStorage
+          await AsyncStorage.setItem('currentUser', JSON.stringify(userData));
+          await AsyncStorage.setItem('token', userData.token);
           Toast.show({ type: 'success', text1: 'Logged in with Google' });
           router.replace('/profile');
         })
@@ -83,14 +88,18 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const res = await axios.post(`${API_BASE_URL}/api/auth/login`, data);
-      setUser({
+      const userData = {
         id: res.data.id,
         fullName: res.data.fullName,
         email: res.data.email,
         token: res.data.token,
-      });
+      };
+      setUser(userData);
+      // Čuvaj user i token u AsyncStorage
+      await AsyncStorage.setItem('currentUser', JSON.stringify(userData));
+      await AsyncStorage.setItem('token', userData.token);
       Toast.show({ type: 'success', text1: 'Login successful' });
-      router.replace('/profile');
+      router.replace('/home');
     } catch (error: any) {
       console.error('Login error:', error);
       setApiError(error?.response?.data?.message || 'Invalid email or password');
@@ -102,20 +111,18 @@ export default function LoginScreen() {
   return (
     <View style={styles.container} accessible accessibilityLabel="Login screen">
       <View style={styles.topRight}>
-      <TouchableOpacity 
-
-  onPress={() => router.push('./signup')} 
-  accessible 
-  accessibilityRole="button" 
-  accessibilityLabel="Go to Sign Up"
->
-  <Text style={styles.signUpText}>Sign Up</Text>
-</TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => router.push('./signup')} 
+          accessible 
+          accessibilityRole="button" 
+          accessibilityLabel="Go to Sign Up"
+        >
+          <Text style={styles.signUpText}>Sign Up</Text>
+        </TouchableOpacity>
       </View>
 
       <Image source={require('@/assets/images/1000006380.png')} style={styles.logo} accessibilityLabel="Vibra logo" />
 
-    
       <Controller
         control={control}
         name="email"
@@ -135,6 +142,8 @@ export default function LoginScreen() {
               accessibilityLabel="Email input"
               placeholderTextColor="#888"
               selectionColor="#4c8bf5"
+              textContentType="username"  // za autofill
+              autoComplete="email"        // za autofill
             />
             {submitAttempted && errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
           </>
@@ -159,6 +168,8 @@ export default function LoginScreen() {
               accessibilityLabel="Password input"
               placeholderTextColor="#888"
               selectionColor="#4c8bf5"
+              textContentType="password"  // za autofill
+              autoComplete="password"     // za autofill
             />
             {submitAttempted && errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
           </>
@@ -175,7 +186,7 @@ export default function LoginScreen() {
         accessibilityRole="button"
         accessibilityLabel="Login button"
       >
-        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
+        {loading ? <ActivityIndicator color="#ffff" /> : <Text style={styles.buttonText}>Login</Text>}
       </TouchableOpacity>
 
       <TouchableOpacity

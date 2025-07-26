@@ -9,7 +9,7 @@
 
     "scheme": "vibranativ",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+   
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tvojaplikacija.vibranativ"

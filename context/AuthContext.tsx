@@ -1,22 +1,29 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface User {
+export interface User {
   id: string;
   fullName: string;
   email: string;
   token: string;
+  birthYear?: number;
+  avatar?: string;
+  profilePictures?: string[];
+  birthDate?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  loading: boolean;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -27,6 +34,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         }
       } catch (error) {
         console.error('Failed to load user from storage', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -49,8 +58,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     saveUser();
   }, [user]);
 
+  const logout = async () => {
+    setUser(null);
+    await AsyncStorage.removeItem('currentUser');
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
